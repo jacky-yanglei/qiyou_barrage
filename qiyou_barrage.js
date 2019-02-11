@@ -17,12 +17,13 @@ jQuery.fn.extend({
                 '<div class="qiyou_barrage_child" id="' + params.id + '">' +
                 '<div class="qiyou_barrage_info"></div>' +
                 '</div>');
+            var screen = $(this);
             var box = $('#' + params.id);
             var infoDom = $('#' + params.id + ' .qiyou_barrage_info');
             infoDom.text(params.info);
             box.css({'top': params.top + 'px', right: '-' + (infoDom.outerWidth() + 10) + 'px'});
             // 获取屏幕宽度
-            var ScreenWidth = $(document).width();
+            var ScreenWidth = screen.width();
             box.css({
                 'transform': 'translateX(-' + (ScreenWidth + infoDom.outerWidth() + 20) + 'px)',
                 'transition': 'transform ' + params.stayTime + 's linear'
@@ -30,6 +31,7 @@ jQuery.fn.extend({
             var timer = setTimeout(function () {
                 box.remove();
             }, params.stayTime * 1000);
+            console.log(screen[0].offsetLeft);
             box.mouseover(function (e) {
                 var obj;
                 if(infoDom[0].currentStyle){
@@ -39,7 +41,7 @@ jQuery.fn.extend({
                     obj = document.defaultView.getComputedStyle(infoDom[0],null)
                 }
                 box.css({
-                    'transform': 'translateX(-' + (ScreenWidth - e.clientX + e.offsetX + parseInt(obj.paddingLeft || 0 ) + parseInt(obj.borderLeft || 0)) + 'px)',
+                    'transform': 'translateX(-' + (ScreenWidth + screen[0].offsetLeft - e.clientX + e.offsetX + parseInt(obj.paddingLeft || 0 ) + parseInt(obj.borderLeft || 0)) + 'px)',
                     'transition': 'transform ' + 0 + 's linear'
                 });
                 clearTimeout(timer);
