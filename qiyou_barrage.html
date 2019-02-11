@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style type="text/css">
+        .content {
+            height: 200px;
+            background-color: rgba(51, 51, 51, 0.35);
+        }
+    </style>
+    <link rel="stylesheet" href="qiyou_barrage.css">
+</head>
+<body>
+<div class="content">
+</div>
+<button class="clear">清除</button>
+<script type="application/javascript" src="jquery.js"></script>
+<script type="application/javascript" src="qiyou_barrage.js"></script>
+<script>
+    var QiYouBarrage = $('.content').QiYouBarrage();
+    QiYouBarrage.addBarrage({info: '第一条弹幕', top: parseInt(Math.random()*160), stayTime: 5});
+    var timer = setInterval(function () {
+        QiYouBarrage.addBarrage({
+            info: '第一条弹幕',
+            top: parseInt(Math.random()*160),
+            stayTime: (parseInt(Math.random()*10 + 5))
+        });
+    }, 1000);
+    $('.clear').click(function () {
+        clearInterval(timer);
+        QiYouBarrage.removeAll();
+    });
+</script>
+</body>
+</html>
