@@ -27,13 +27,23 @@
 <script type="application/javascript" src="jquery.js"></script>
 <script type="application/javascript" src="qiyou_barrage.js"></script>
 <script>
-    var QiYouBarrage = $('.content').QiYouBarrage();
+    var QiYouBarrage = $('.content').QiYouBarrage(
+        {
+            colorStyle: [
+                '#adadad',
+                '#adadad',
+                '#adadad',
+            ]  // 弹幕字体色色板  只接受数组
+        }
+    );
     QiYouBarrage.addBarrage({info: '第一条弹幕', top: parseInt(Math.random()*160), stayTime: 5});
     var timer = setInterval(function () {
         QiYouBarrage.addBarrage({
-            info: '第一条弹幕',
-            top: parseInt(Math.random()*160),
-            stayTime: (parseInt(Math.random()*10 + 5))
+            info: '第一条弹幕', // 弹幕内容
+            top: parseInt(Math.random()*160), // 距离顶部高度
+            stayTime: (parseInt(Math.random()*10 + 5)), // 弹幕在屏中存在的时间
+            fontColor: 2, // 弹幕字体颜色 可以直接配置颜色（String形式），也可配置成根据默认色板数组中的数值下标
+            backgroundColor: 'rgba(255, 255, 255, .5)' // 弹幕的背景色
         });
     }, 1000);
     $('.clear').click(function () {

@@ -1,21 +1,46 @@
 jQuery.fn.extend({
-    QiYouBarrage: function () {
+    QiYouBarrage: function (option) {
+        this.option = {
+            colorStyle: [
+                '#FFFFFF',
+                '#FF0000',
+                '#FF7D00',
+                '#FFFF00',
+                '#00FF00',
+                '#00FFFF',
+                '#0000FF',
+                '#FF00FF'
+            ]
+        };
+        if (option&&option.colorStyle instanceof Array) {
+            // 默认字体颜色 必须是一个数组
+            this.option.colorStyle = option.colorStyle;
+        }
         // 添加一个弹幕层
         $(this).addClass('qiyou_barrage');
         $(this).append('<div class="qiyou_barrage_content">' +
             '</div>');
         // 添加弹幕
         this.addBarrage = function (obj) {
+            if (typeof obj.fontColor === 'string') {
+
+            }else if (typeof obj.fontColor === 'number') {
+                obj.fontColor = this.option.colorStyle[obj.fontColor];
+            }else {
+                obj.fontColor = false;
+            }
             // 参数配置默认值
             var params = {
-                id: 'qiyou_barrage_' + new Date().getTime() + parseInt(Math.random()*200),
+                id: 'qiyou_barrage_' + new Date().getTime() + parseInt(Math.random()*10000000),
                 info: obj.info || '', // 弹幕内容
-                stayTime: obj.stayTime || 10, // 弹幕在屏中移动的时间
-                top: obj.top || 10
+                stayTime: obj.stayTime || 10, // 弹幕在屏中存在的时间
+                top: obj.top || 10, // 距离顶部高度
+                fontColor: obj.fontColor || this.option.colorStyle[0],  // 弹幕字体颜色，可根据默认颜色数组顺序输入数字对应可能是VIP等级用户弹幕颜色
+                backgroundColor: obj.backgroundColor || 'rgba(51, 51, 51, 0.7)' // 弹幕背景色
             };
             $(this).find('.qiyou_barrage_content').append(
                 '<div class="qiyou_barrage_child" id="' + params.id + '">' +
-                '<div class="qiyou_barrage_info"></div>' +
+                '<div class="qiyou_barrage_info" style="color: ' + params.fontColor + ';background-color: ' + params.backgroundColor + '"></div>' +
                 '</div>');
             var screen = $(this);
             var box = $('#' + params.id);
@@ -31,7 +56,6 @@ jQuery.fn.extend({
             var timer = setTimeout(function () {
                 box.remove();
             }, params.stayTime * 1000);
-            console.log(screen[0].offsetLeft);
             box.mouseover(function (e) {
                 var obj;
                 if(infoDom[0].currentStyle){
